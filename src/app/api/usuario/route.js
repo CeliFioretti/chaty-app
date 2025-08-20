@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function GET() {
-    //const res = await fetch('https://jsonplaceholder.typicode.com/users')
-
     const res = await prisma.usuario.findMany()
     return NextResponse.json(res)
 }
