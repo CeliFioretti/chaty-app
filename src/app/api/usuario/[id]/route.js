@@ -1,6 +1,10 @@
+// --------------------------------------------- IMPORTS
+// Para la respuesta y usar Prisma
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+// --------------------------------------------- MÉTODOS HTTP
+// Obtiene los detalles de un usuario
 export async function GET(request, { params }) {
     try {
         const parametros = await params
@@ -20,6 +24,7 @@ export async function GET(request, { params }) {
     }
 }
 
+// Elimina un usuario
 export async function DELETE(request, { params }) {
     try {
         // 1.Obtenemos el usuario
@@ -43,6 +48,7 @@ export async function DELETE(request, { params }) {
     }
 }
 
+// Actualiza un usuario (hay que actualizar)
 export async function PUT(request, {params}) {
     const body = await request.json();
     const { nombre } = body;

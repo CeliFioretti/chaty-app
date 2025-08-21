@@ -1,27 +1,55 @@
+// --------------------------------------------- IMPORTS
+// Para la respuesta y usar Prisma
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+// Hasheo de contraseña
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
+// --------------------------------------------- VARIABLES
+// Clave única para generar token
+const SECRET = process.env.JWT_SECRET;
+
+// --------------------------------------------- MÉTODOS HTTP
+// Obtiene todos los usuarios
 export async function GET() {
     const res = await prisma.usuario.findMany()
     return NextResponse.json(res)
 }
 
+// Crea un nuevo usuario (hay que actualizar)
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { nombre } = body;
+        const { nombre, correo, password } = body;
 
-        if (!nombre) {
+        if (!nombre || !correo || !password) {
             return NextResponse.json({
-                error : "Falta agregar el nombre" 
+                error : "Faltan campos obligatorios" 
             })
         }
 
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const nuevoUsuario = await prisma.usuario.create({
-            data : {nombre}
+            data : {
+                nombre,
+                correo,
+                password : hashedPassword
+            }
         })
 
-        return NextResponse.json(nuevoUsuario)
+        const token = jwt.sign({id: nuevoUsuario.id}, SECRET, {expiresIn: "2h"})
+
+        return NextResponse.json({
+            usuario: {
+                id: nuevoUsuario.id,
+                nombre: nuevoUsuario.nombre,
+                correo: nuevoUsuario.correo
+            },
+            token,
+        })
 
     } catch (error) {
         console.error("Error al crear usuario ", error)
