@@ -3,13 +3,15 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Usuario {
   id       Int       @id @default(autoincrement())
   nombre   String
+  correo String
+  password String
   mensajes Mensaje[]
 }
 
