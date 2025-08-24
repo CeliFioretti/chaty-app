@@ -12,7 +12,7 @@ model Usuario {
   nombre   String
   correo String @unique
   password String
-  verificationToken String?
+  verificationToken String? @unique
   emailVerified  Boolean  @default(false)
   mensajes Mensaje[]
 }

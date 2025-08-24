@@ -6,6 +6,8 @@ import prisma from "@/lib/prisma";
 // Hasheo de contraseña
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import {v4 as uuidv4} from 'uuid'
+import sendVerificationEmail from '@/lib/mailer'
 
 // --------------------------------------------- VARIABLES
 // Clave única para generar token
@@ -31,16 +33,19 @@ export async function POST(request) {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        const verificationToken = uuidv4();
 
         const nuevoUsuario = await prisma.usuario.create({
             data : {
                 nombre,
                 correo,
-                password : hashedPassword
+                password : hashedPassword,
+                verificationToken,
+                emailVerified: false
             }
         })
 
-        const token = jwt.sign({id: nuevoUsuario.id}, SECRET, {expiresIn: "2h"})
+        await sendVerificationEmail(correo, verificationToken)
 
         return NextResponse.json({
             usuario: {
@@ -48,7 +53,7 @@ export async function POST(request) {
                 nombre: nuevoUsuario.nombre,
                 correo: nuevoUsuario.correo
             },
-            token,
+            mensaje: 'Usuario creado. Verificá tu correo para activar la cuenta'
         })
 
     } catch (error) {
