@@ -9,11 +9,12 @@ datasource db {
 
 model Usuario {
   id       Int       @id @default(autoincrement())
-  nombre   String
+  nombre   String @unique
   correo String @unique
   password String
   verificationToken String? @unique
   emailVerified  Boolean  @default(false)
+  tokenRecuperacion String? @unique
   mensajes Mensaje[]
 }
 

@@ -17,7 +17,12 @@ export async function GET(request, { params }) {
             return NextResponse.json({ error: "Usuario no encontrado" })
         }
 
-        return NextResponse.json(usuario)
+        return NextResponse.json({
+            id : usuario.id,
+            nombre : usuario.nombre,
+            correo : usuario.correo,
+            emailverified : usuario.emailVerified
+        })
     } catch (error) {
         console.error("Error al buscar usuario", error)
         return NextResponse.json({ error: "Error interno" })
@@ -48,7 +53,7 @@ export async function DELETE(request, { params }) {
     }
 }
 
-// Actualiza un usuario (hay que actualizar)
+// Actualiza un usuario 
 export async function PUT(request, {params}) {
     const body = await request.json();
     const { nombre } = body;

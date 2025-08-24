@@ -5,13 +5,9 @@ import prisma from "@/lib/prisma";
 
 // Hasheo de contraseña
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import {v4 as uuidv4} from 'uuid'
 import sendVerificationEmail from '@/lib/mailer'
 
-// --------------------------------------------- VARIABLES
-// Clave única para generar token
-const SECRET = process.env.JWT_SECRET;
 
 // --------------------------------------------- MÉTODOS HTTP
 // Obtiene todos los usuarios
@@ -20,7 +16,7 @@ export async function GET() {
     return NextResponse.json(res)
 }
 
-// Crea un nuevo usuario (hay que actualizar)
+// Crea un nuevo usuario
 export async function POST(request) {
     try {
         const body = await request.json();
