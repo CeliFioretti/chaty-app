@@ -66,6 +66,41 @@ export async function GET(request, { params }) {
         return NextResponse.json({mensajesCanal})
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: "Sucedio un error obtener todos los mensajes del canal" });
+        return NextResponse.json({ error: "Sucedio un error al obtener todos los mensajes del canal" });
+    }
+}
+
+// Obtener todos los mensajes de un canal
+export async function GET(request, { params }) {
+    const parametros = await params;
+    const idCanal = parametros.id;
+
+    try {
+        const canal = await prisma.canal.findUnique({
+            where : {id : Number(idCanal)}
+        });
+
+        if(!canal) {
+            return NextResponse.json({ error: "Canal no existente" });
+        }
+
+        const mensajesEliminados = await prisma.mensaje.delete({
+            where: {canalId : Number(idCa)}
+        })
+
+        const mensajesCanal = await prisma.mensaje.findMany({
+            where : {canalId: Number(idCanal)},
+            orderBy : {createdAt: 'asc'}
+        });
+
+        return NextResponse.json(
+            {
+                mensaje: "Mensajes de canal eliminados correctamente",
+                mensajesCanalActuales : mensajesCanal
+            }  
+        )
+    } catch (error) {
+        console.error({ message: "Error interno" }, error);
+        return NextResponse.json({ error: "Sucedio un error al borrar los mensajes del chat" });
     }
 }
