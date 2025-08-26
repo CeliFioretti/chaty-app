@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
         }
     });
 
-async function sendVerificationEmail(email, token) {
+export async function sendVerificationEmail(email, token) {
     const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/usuario/verificar?token=${token}`
 
     const mailOptions = {
@@ -27,7 +27,7 @@ async function sendVerificationEmail(email, token) {
 
 }
 
-async function sendRecoveryEmail(email, token) {
+export async function sendRecoveryEmail(email, token) {
     const recoveryUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/usuario/recuperar?token=${token}`;
 
     const mailOptions = {
@@ -44,8 +44,3 @@ async function sendRecoveryEmail(email, token) {
 
     await transporter.sendMail(mailOptions);
 }
-
-module.exports = {
-    sendVerificationEmail,
-    sendRecoveryEmail
-};

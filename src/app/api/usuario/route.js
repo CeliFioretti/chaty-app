@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 // Hasheo de contraseña
 import bcrypt from 'bcrypt'
 import {v4 as uuidv4} from 'uuid'
-import sendVerificationEmail from '@/lib/mailer'
+import {sendVerificationEmail} from '@/lib/mailer'
 
 
 // --------------------------------------------- MÉTODOS HTTP
@@ -19,6 +19,7 @@ export async function GET() {
 // Crea un nuevo usuario
 export async function POST(request) {
     try {
+        
         const body = await request.json();
         const { nombre, correo, password } = body;
 

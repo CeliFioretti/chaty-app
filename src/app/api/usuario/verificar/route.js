@@ -3,6 +3,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+// Verifica usuario por correo
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const token = searchParams.get('token');
