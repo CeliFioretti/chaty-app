@@ -16,7 +16,7 @@ export async function POST(request) {
         const { correo } = body;
 
         if (!correo) {
-            return NextResponse.json({ error: "Falta proporcionar un correo" });
+            return NextResponse.json({ error: "Falta proporcionar un correo" }, {status: 400});
         }
 
         const usuario = await prisma.usuario.findUnique({
@@ -24,7 +24,7 @@ export async function POST(request) {
         });
 
         if (!usuario) {
-            return NextResponse.json({ error: "No existe un usuario con esa dirección de correo" })
+            return NextResponse.json({ error: "No existe un usuario con esa dirección de correo" }, {status : 400})
         }
 
         const token = jwt.sign({ id: usuario.id }, SECRET, { expiresIn: "2h" });
@@ -44,7 +44,7 @@ export async function POST(request) {
 
     } catch (error) {
         console.error({ message: "Error interno" })
-        return NextResponse.json({ error: "Sucedio un problema al tratar de recuperar el password" })
+        return NextResponse.json({ error: "Sucedio un problema al tratar de recuperar el password" }, {status: 500})
     }
 }
 
@@ -58,11 +58,11 @@ export async function PUT(request) {
         const { password } = body;
 
         if (!token) {
-            return NextResponse.json({ error: "Error al recuperar contraseña" })
+            return NextResponse.json({ error: "Error al recuperar contraseña" }, { status: 400})
         }
 
         if (!password) {
-            return NextResponse.json({ error: "Faltan campos por rellenar" })
+            return NextResponse.json({ error: "Faltan campos por rellenar" }, {status: 400})
         }
 
         const passwordHasheada = await bcrypt.hash(password, 10)
@@ -78,6 +78,6 @@ export async function PUT(request) {
         return NextResponse.json({ mensaje: "Contraseña actualizada con éxito" })
     } catch (error) {
         console.error({ message: "Error interno" })
-        return NextResponse.json({ error: "Sucedio un problema al tratar de actualizar el password" })
+        return NextResponse.json({ error: "Sucedio un problema al tratar de actualizar el password"}, {status: 500})
     }
 }

@@ -15,7 +15,7 @@ export async function GET(request, { params }) {
         });
 
         if(!canal) {
-            return NextResponse.json({ error: "No se encontró ningun canal" })
+            return NextResponse.json({ error: "No se encontró ningun canal" }, {status: 400})
         }
 
         const mensajesCanal = await prisma.mensaje.findMany({
@@ -29,7 +29,7 @@ export async function GET(request, { params }) {
 
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: `Sucedio un error al obtener datos del canal ${canalId}` })
+        return NextResponse.json({ error: `Sucedio un error al obtener datos del canal ${canalId}`}, {status: 500})
     }
 }
 
@@ -54,7 +54,7 @@ export async function DELETE(request, {params}) {
 
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: `Sucedio un error al borrar canal` })
+        return NextResponse.json({ error: `Sucedio un error al borrar canal` }, {status: 500})
     }
 }
 
@@ -66,6 +66,10 @@ export async function PUT(request, {params}) {
 
         const parametros = await params;
         const canalId = parametros.id;
+
+        if (!nombre) {
+            return NextResponse.json({error: 'Faltan campos por rellenar'}, {status: 400})
+        }
 
         const canal = await prisma.canal.findUnique({
             where: {id : Number(canalId)}
@@ -86,6 +90,6 @@ export async function PUT(request, {params}) {
 
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: `Sucedio un error actualizar el canal` })
+        return NextResponse.json({ error: `Sucedio un error actualizar el canal` }, {status: 500})
     }
 }

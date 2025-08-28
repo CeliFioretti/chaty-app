@@ -14,18 +14,18 @@ export async function GET(request, { params }) {
         })
 
         if (!usuario) {
-            return NextResponse.json({ error: "Usuario no encontrado" })
+            return NextResponse.json({ error: "Usuario no encontrado" }, { status: 400 })
         }
 
         return NextResponse.json({
-            id : usuario.id,
-            nombre : usuario.nombre,
-            correo : usuario.correo,
-            emailverified : usuario.emailVerified
+            id: usuario.id,
+            nombre: usuario.nombre,
+            correo: usuario.correo,
+            emailverified: usuario.emailVerified
         })
     } catch (error) {
         console.error("Error al buscar usuario", error)
-        return NextResponse.json({ error: "Error interno" })
+        return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
 
@@ -39,7 +39,7 @@ export async function DELETE(request, { params }) {
             where: { id: Number(usuarioId) }
         })
         if (!usuario) {
-            return NextResponse.json({ error: "No se encontró el usuario" }, error)
+            return NextResponse.json({ error: "No se encontró el usuario" }, { status: 400 })
         }
         // 2.Eliminamos el usuario
         const usuarioEliminado = await prisma.usuario.delete({
@@ -49,32 +49,37 @@ export async function DELETE(request, { params }) {
         return NextResponse.json(`Usuario eliminado correctamente: ${usuarioEliminado.id}. ${usuarioEliminado.nombre}`)
     } catch (error) {
         console.error("Error al eliminar el usuario", error);
-        return NextResponse.json({ error: "Error interno" })
+        return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
 }
 
 // Actualiza un usuario 
-export async function PUT(request, {params}) {
-    const body = await request.json();
-    const { nombre } = body;
+export async function PUT(request, { params }) {
+    try {
+        const body = await request.json();
+        const { nombre } = body;
 
-    // 1. Obtenemos el usuario a actualizar
-    const parametros = await params
-    const usuarioId = parametros.id
-    const usuario = await prisma.usuario.findUnique({
-        where : {id : Number(usuarioId)}
-    })
+        // 1. Obtenemos el usuario a actualizar
+        const parametros = await params
+        const usuarioId = parametros.id
+        const usuario = await prisma.usuario.findUnique({
+            where: { id: Number(usuarioId) }
+        })
 
-    if(!usuario) {
-        return NextResponse.json({error: "No se encontró el usuario"})
+        if (!usuario) {
+            return NextResponse.json({ error: "No se encontró el usuario" }, { status: 400 })
+        }
+        // 2. Editamos el usuario
+        const usuarioEditado = await prisma.usuario.update({
+            where: { id: Number(usuarioId) },
+            data: { nombre }
+        })
+
+        // 3. Mostramos el resultado de la edicion o mensaje
+        return NextResponse.json(`Usuario actualizado correctamente: ${usuario.id}. ${usuario.nombre} a ${usuarioEditado.id}. ${usuarioEditado.nombre}`)
+    } catch (error) {
+        console.error("Error al eliminar el usuario", error);
+        return NextResponse.json({ error: "Error interno" }, { status: 500 })
     }
-    // 2. Editamos el usuario
-    const usuarioEditado = await prisma.usuario.update({
-        where : {id : Number(usuarioId)},
-        data : {nombre}
-    })
-
-    // 3. Mostramos el resultado de la edicion o mensaje
-    return NextResponse.json(`Usuario actualizado correctamente: ${usuario.id}. ${usuario.nombre} a ${usuarioEditado.id}. ${usuarioEditado.nombre}`)
 }
 

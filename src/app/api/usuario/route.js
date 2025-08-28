@@ -26,7 +26,7 @@ export async function POST(request) {
         if (!nombre || !correo || !password) {
             return NextResponse.json({
                 error : "Faltan campos obligatorios" 
-            })
+            }, {status : 400})
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -55,6 +55,6 @@ export async function POST(request) {
 
     } catch (error) {
         console.error("Error al crear usuario ", error)
-        return NextResponse.json({error: "Error interno"})
+        return NextResponse.json({error: "Error interno"}, {status : 500})
     } 
 }

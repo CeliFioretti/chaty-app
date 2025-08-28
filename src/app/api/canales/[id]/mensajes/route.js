@@ -12,14 +12,14 @@ export async function POST(request, { params }) {
     const { mensaje } = body;
 
     if (!mensaje || !usuarioId) {
-        return NextResponse.json({ error: "Faltan campos por completar" })
+        return NextResponse.json({ error: "Faltan campos por completar" }, { status: 400})
     }
 
     const parametros = await params;
     const canalId = parametros.id;
 
     if (!canalId) {
-        return NextResponse.json({ error: "Canal no encontrado" })
+        return NextResponse.json({ error: "Canal no encontrado" }, {status: 404})
     }
     try {
         const mensajeAgregado = await prisma.mensaje.create({
@@ -40,7 +40,7 @@ export async function POST(request, { params }) {
 
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: "Sucedio un error al crear un mensaje" })
+        return NextResponse.json({ error: "Sucedio un error al crear un mensaje" }, {status: 500})
     }
 }
 
@@ -56,7 +56,7 @@ export async function GET(request, { params }) {
         });
 
         if(!canal) {
-            return NextResponse.json({ error: "Canal no existente" });
+            return NextResponse.json({ error: "Canal no existente" }, {status: 404});
         }
 
         const mensajesCanal = await prisma.mensaje.findMany({
@@ -66,7 +66,7 @@ export async function GET(request, { params }) {
         return NextResponse.json({mensajesCanal})
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: "Sucedio un error al obtener todos los mensajes del canal" });
+        return NextResponse.json({ error: "Sucedio un error al obtener todos los mensajes del canal" }, {status: 500});
     }
 }
 
@@ -81,7 +81,7 @@ export async function GET(request, { params }) {
         });
 
         if(!canal) {
-            return NextResponse.json({ error: "Canal no existente" });
+            return NextResponse.json({ error: "Canal no existente" }, {status: 404});
         }
 
         const mensajesEliminados = await prisma.mensaje.delete({
@@ -101,6 +101,6 @@ export async function GET(request, { params }) {
         )
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: "Sucedio un error al borrar los mensajes del chat" });
+        return NextResponse.json({ error: "Sucedio un error al borrar los mensajes del chat" }, {status: 500});
     }
 }

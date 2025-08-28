@@ -13,11 +13,11 @@ export async function POST(request) {
         const { nombre } = body;
 
         if(!usuarioId) {
-            return NextResponse.json({ error: "Acceso restringido" });
+            return NextResponse.json({ error: "Acceso restringido" }, {status: 400});
         }
 
         if (!nombre) {
-            return NextResponse.json({ error: "Faltan campos por rellenar" });
+            return NextResponse.json({ error: "Faltan campos por rellenar" }, {status: 400});
         }
 
         const nuevoCanal = await prisma.canal.create({
@@ -36,7 +36,7 @@ export async function POST(request) {
 
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: "Sucedio un error al crear un canal" })
+        return NextResponse.json({ error: "Sucedio un error al crear un canal" }, {status: 500})
     }
 }
 
@@ -50,6 +50,6 @@ export async function GET(request) {
         })
     } catch (error) {
         console.error({ message: "Error interno" }, error);
-        return NextResponse.json({ error: "Sucedio un error al obtener los canales" })
+        return NextResponse.json({ error: "Sucedio un error al obtener los canales"}, {status: 500})
     }
 }
