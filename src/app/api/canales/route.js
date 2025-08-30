@@ -48,6 +48,7 @@ export async function GET(request) {
         return NextResponse.json({
             canales: canales
         })
+        
     } catch (error) {
         console.error({ message: "Error interno" }, error);
         return NextResponse.json({ error: "Sucedio un error al obtener los canales"}, {status: 500})

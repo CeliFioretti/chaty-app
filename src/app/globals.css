@@ -1,8 +1,24 @@
 @import "tailwindcss";
 
 body {
+  background-color: #f2f6fc;
+}
+
+.login {
   background: radial-gradient(circle at center,
   #003792 0%,
   #010B26 100%
   );
+}
+
+.canales {
+  background-color: #2b3c5f
+}
+
+.items-canales {
+  background-color: #cbddf2;
+}
+
+.items-canales:hover {
+  background-color: #a8c7e8;
 }

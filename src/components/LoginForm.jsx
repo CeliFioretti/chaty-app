@@ -1,12 +1,29 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation';
 
 function LoginForm() {
+    const router = useRouter();
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
     const [mensaje, setMensaje] = useState('');
     const [cargando, setCargando] = useState(false);
+
+    const [verificando, setVerificando] = useState(true);
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            router.push('/canales')
+        } else {
+            setVerificando(false);
+        }
+    }, [])
+
+    if (verificando) {
+        return null;
+    }
 
     async function realizarLogin(event) {
         event.preventDefault();
@@ -25,7 +42,7 @@ function LoginForm() {
             if (res.ok) {
                 setMensaje(data.mensaje);
                 sessionStorage.setItem('token', data.token);
-
+                router.push('/canales')
             } else {
                 setMensaje(data.error || 'Error desconocido');
             }
@@ -35,8 +52,13 @@ function LoginForm() {
             setCargando(false);
         }
     }
+
+
     return (
         <div>
+            <h1 className='text-4xl font-bold text-center'>Chaty</h1>
+            <h2 className='text-2xl text-center '>Iniciar sesión</h2>
+            
             <form onSubmit={realizarLogin} method="POST">
                 <div className='flex flex-col mt-8'>
 
