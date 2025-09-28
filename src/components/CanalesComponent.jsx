@@ -4,10 +4,11 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSidebar } from '@/context/SidebarContext';
 
 function CanalesComponent() {
     const router = useRouter();
-
+    const { isExpanded } = useSidebar();
     const [canales, setCanales] = useState([]);
     const [mensaje, setMensaje] = useState('');
     const [autenticando, setAutenticando] = useState(true);
@@ -51,12 +52,12 @@ function CanalesComponent() {
     }
 
     return (
-        <div className='text-center '>
-            <h1 className='canales text-zinc-50 text-3xl p-5 '>Bienvenido a Chaty</h1>
-            <h2 className='mt-5 text-xl text-white'>Escoge un canal para empezar a chatear</h2>
-            <div className=' mt-5 text-xl text-white flex gap-x-20 items-center justify-center flex-wrap mb-10'>
+        <div className={`text-center`}>
+            <h1 className='canales text-zinc-50 text-3xl p-5 '>Canales</h1>
+            <h2 className='mt-5 text-xl'>Escoge un canal para empezar a chatear</h2>
+            <div className='mt-5 text-xl text-white flex gap-x-20 items-center justify-center flex-wrap mb-10'>
                 {canales.map(canal => (
-                    <Link key={canal.id} href={`/canales/${canal.id}`} className='items-canales text-zinc-900 p-5 w-1/2 cursor-pointer m-3 rounded'>
+                    <Link key={canal.id} href={`/canales/${canal.id}`} className='items-canales text-zinc-900 p-5 w-1/2 cursor-pointer m-3 rounded transition-colors duration-200'>
                         <h2 className='uppercase text-2xl font-extrabold'>{canal.nombre}</h2>
                     </Link>
                 ))}

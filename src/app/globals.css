@@ -12,7 +12,7 @@ body {
 }
 
 .canales {
-  background-color: #2b3c5f
+  background-color: #081f38
 }
 
 .items-canales {
@@ -25,4 +25,8 @@ body {
 
 .sidebar-component{
   background-color: #3A343D;
+}
+
+.fondo-main{
+  background-color: #F2F6FA;
 }
