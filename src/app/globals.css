@@ -22,3 +22,7 @@ body {
 .items-canales:hover {
   background-color: #a8c7e8;
 }
+
+.sidebar-component{
+  background-color: #3A343D;
+}
