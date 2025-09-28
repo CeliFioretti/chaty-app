@@ -1,41 +1,44 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import React from 'react'
 import Link from 'next/link'
 
-function SideBar({ isOpen, setIsOpen }) {
+function SideBar() {
     const router = useRouter();
+    const pathname = usePathname();
     const [autenticando, setAutenticando] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
 
+
     // Iconos
-    const IconChat = () => (
+    const IconChat = ({ className = '' }) => (
         <svg
             viewBox="360 255 32 32"
             fill="currentColor"
-            className="w-6 h-6 text-gray-300"
+
+            className={`w-6 h-6 text-gray-300 ${className}`}
             xmlns="http://www.w3.org/2000/svg"
         >
             <path d="M390,277 C390,278.463 388.473,280 387,280 L379,280 L376,284 L373,280 L365,280 C363.527,280 362,278.463 362,277 L362,260 C362,258.537 363.527,257 365,257 L387,257 C388.473,257 390,258.537 390,260 L390,277 L390,277 Z M386.667,255 L365.333,255 C362.388,255 360,257.371 360,260.297 L360,277.187 C360,280.111 362.055,282 365,282 L371.639,282 L376,287.001 L380.361,282 L387,282 C389.945,282 392,280.111 392,277.187 L392,260.297 C392,257.371 389.612,255 386.667,255 L386.667,255 Z" />
         </svg>
     )
-    const IconUser = () => (
+    const IconUser = ({ className = '' }) => (
         <svg
             viewBox="365 307 32 32"
             fill="currentColor"
-            className="w-6 h-6 text-gray-300"
+            className={`w-6 h-6 text-gray-300 ${className}`}
             xmlns="http://www.w3.org/2000/svg"
         >
             <path d="M385,332.5 C385,334.985 382.802,337 380.091,337 L371.909,337 C369.198,337 367,334.985 367,332.5 L367,329.5 C367,327.374 368.613,325.604 370.775,325.133 C372.25,326.304 374.05,327 376,327 C377.95,327 379.75,326.304 381.225,325.133 C383.387,325.604 385,327.374 385,329.5 L385,332.5 L385,332.5 Z M369,317 C369,312.582 372.134,309 376,309 C379.866,309 383,312.582 383,317 C383,321.418 379.866,325 376,325 C372.134,325 369,321.418 369,317 L369,317 Z M382.951,323.353 C384.23,321.625 385,319.412 385,317 C385,311.478 380.971,307 376,307 C371.029,307 367,311.478 367,317 C367,319.412 367.77,321.625 369.049,323.353 C366.699,324.165 365,326.373 365,329 L365,333 C365,336.313 367.687,339 371,339 L381,339 C384.313,339 387,336.313 387,333 L387,329 C387,326.373 385.301,324.165 382.951,323.353 L382.951,323.353 Z" />
         </svg>
     )
-    const IconConfig = () => (
+    const IconConfig = ({ className = '' }) => (
         <svg
             viewBox="101 360 32 32"
             fill="currentColor"
-            className="w-6 h-6 text-gray-300"
+            className={`w-6 h-6 text-gray-300 ${className}`}
             xmlns="http://www.w3.org/2000/svg"
         >
             <path d="M128.52,381.134 L127.528,382.866 C127.254,383.345 126.648,383.508 126.173,383.232 L123.418,381.628 C122.02,383.219 120.129,384.359 117.983,384.799 L117.983,387 C117.983,387.553 117.54,388 116.992,388 L115.008,388 C114.46,388 114.017,387.553 114.017,387 L114.017,384.799 C111.871,384.359 109.98,383.219 108.582,381.628 L105.827,383.232 C105.352,383.508 104.746,383.345 104.472,382.866 L103.48,381.134 C103.206,380.656 103.369,380.044 103.843,379.769 L106.609,378.157 C106.28,377.163 106.083,376.106 106.083,375 C106.083,373.894 106.28,372.838 106.609,371.843 L103.843,370.232 C103.369,369.956 103.206,369.345 103.48,368.866 L104.472,367.134 C104.746,366.656 105.352,366.492 105.827,366.768 L108.582,368.372 C109.98,366.781 111.871,365.641 114.017,365.201 L114.017,363 C114.017,362.447 114.46,362 115.008,362 L116.992,362 C117.54,362 117.983,362.447 117.983,363 L117.983,365.201 C120.129,365.641 122.02,366.781 123.418,368.372 L126.173,366.768 C126.648,366.492 127.254,366.656 127.528,367.134 L128.52,368.866 C128.794,369.345 128.631,369.956 128.157,370.232 L125.391,371.843 C125.72,372.838 125.917,373.894 125.917,375 C125.917,376.106 125.72,377.163 125.391,378.157 L128.157,379.769 C128.631,380.044 128.794,380.656 128.52,381.134 L128.52,381.134 Z M130.008,378.536 L127.685,377.184 C127.815,376.474 127.901,375.749 127.901,375 C127.901,374.252 127.815,373.526 127.685,372.816 L130.008,371.464 C130.957,370.912 131.281,369.688 130.733,368.732 L128.75,365.268 C128.203,364.312 126.989,363.983 126.041,364.536 L123.694,365.901 C122.598,364.961 121.352,364.192 119.967,363.697 L119.967,362 C119.967,360.896 119.079,360 117.983,360 L114.017,360 C112.921,360 112.033,360.896 112.033,362 L112.033,363.697 C110.648,364.192 109.402,364.961 108.306,365.901 L105.959,364.536 C105.011,363.983 103.797,364.312 103.25,365.268 L101.267,368.732 C100.719,369.688 101.044,370.912 101.992,371.464 L104.315,372.816 C104.185,373.526 104.099,374.252 104.099,375 C104.099,375.749 104.185,376.474 104.315,377.184 L101.992,378.536 C101.044,379.088 100.719,380.312 101.267,381.268 L103.25,384.732 C103.797,385.688 105.011,386.017 105.959,385.464 L108.306,384.099 C109.402,385.039 110.648,385.809 112.033,386.303 L112.033,388 C112.033,389.104 112.921,390 114.017,390 L117.983,390 C119.079,390 119.967,389.104 119.967,388 L119.967,386.303 C121.352,385.809 122.598,385.039 123.694,384.099 L126.041,385.464 C126.989,386.017 128.203,385.688 128.75,384.732 L130.733,381.268 C131.281,380.312 130.957,379.088 130.008,378.536 L130.008,378.536 Z M116,378 C114.357,378 113.025,376.657 113.025,375 C113.025,373.344 114.357,372 116,372 C117.643,372 118.975,373.344 118.975,375 C118.975,376.657 117.643,378 116,378 L116,378 Z M116,370 C113.261,370 111.042,372.238 111.042,375 C111.042,377.762 113.261,380 116,380 C118.739,380 120.959,377.762 120.959,375 C120.959,372.238 118.739,370 116,370 L116,370 Z" />
@@ -46,7 +49,7 @@ function SideBar({ isOpen, setIsOpen }) {
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 24 24"
-            className="w-6 h-6 text-red-400"
+            className="w-6 h-6 text-red-400 "
         >
             <path d="M16 13v-2H7V8l-5 4 5 4v-3h9zm3-10H5c-1.1 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 
              1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
@@ -71,26 +74,36 @@ function SideBar({ isOpen, setIsOpen }) {
         );
     }
 
-
     return (
-        <aside className={`sidebar-component text-white h-screen pt-10 flex flex-col fixed top-0 left-0 transition-all duration-300 min-h-screen ${isExpanded ? 'w-52' : 'w-16'}`} onMouseEnter={() => setIsExpanded(true)} onMouseLeave={() => setIsExpanded(false)}>
+        <aside className={`sidebar-component text-white h-screen flex flex-col fixed top-0 left-0 transition-all duration-300 min-h-screen ${isExpanded ? 'w-52' : 'w-16'}`} onMouseEnter={() => setIsExpanded(true)} onMouseLeave={() => setIsExpanded(false)}>
 
-            <div className='flex flex-col justify-between h-full'>
-                <nav className='flex flex-col gap-8 ps-5'>
-                    <Link href='/canales' className='hover:text-amber-400 flex gap-2 text-zinc-300'>
-                        <IconChat />
-                        {isExpanded && <span>Canales</span>}
+            <div className='flex flex-col justify-between h-full w-full'>
+                <nav className='flex flex-col gap-4'>
+                    <Link
+                        href="/canales"
+                        className={`flex gap-2 text-zinc-300 group py-3 px-5 ${pathname === '/canales' ? 'items-start bg-zinc-900/50' : 'items-center'}`}
+                    >
+                        <div className="flex flex-col items-center">
+                            <IconChat className={`text-gray-300 group-hover:text-blue-600 transition-colors duration-200`} />
+                            {pathname === '/canales' ? <div className="w-4 h-[2px] mt-2 bg-blue-500 rounded-full " /> : <div className="w-4 h-[2px] mt-2" />}
+                        </div>
+                        {isExpanded && <span className='group-hover:text-blue-600'>Canales</span>}
                     </Link>
 
-
-                    <Link href='/perfil' className='hover:text-amber-400 flex gap-2 text-zinc-300 ps-1'>
-                        <IconUser />
-                        {isExpanded && <span>Perfil</span>}
+                    <Link href='/perfil' className={`flex gap-2 text-zinc-300 py-3 ps-6 pe-5 group ${pathname === '/perfil' ? 'items-start bg-zinc-900' : 'items-center'}`}>
+                        <div className="flex flex-col items-center">
+                            <IconUser className={`text-gray-300 group-hover:text-blue-600 transition-colors duration-200`}/>
+                            {pathname === '/perfil' ? <div className="w-4 h-[2px] mt-2 bg-blue-500 rounded-full" /> : <div className="w-4 h-[2px] mt-2" />}
+                        </div>
+                        {isExpanded && <span className='group-hover:text-blue-600'>Perfil</span>}
                     </Link>
 
-                    <Link href='/ajustes' className='hover:text-amber-400 flex gap-2 text-zinc-300'>
-                        <IconConfig />
-                        {isExpanded && <span>Ajustes</span>}
+                    <Link href='/ajustes' className={`flex gap-2 text-zinc-300 group py-3 px-5 ${pathname === '/configuracion' ? 'items-start bg-zinc-900' : 'items-center'}`}>
+                        <div className="flex flex-col items-center">
+                            <IconConfig className={`text-gray-300 group-hover:text-blue-600 transition-colors duration-200`}/>
+                            {pathname === '/configuracion' ? <div className="w-4 h-[2px] mt-2 bg-blue-500 rounded-full" /> : <div className="w-4 h-[2px] mt-2" />}
+                        </div>
+                        {isExpanded && <span className='group-hover:text-blue-600'>Ajustes</span>}
                     </Link>
 
                 </nav>
@@ -99,7 +112,7 @@ function SideBar({ isOpen, setIsOpen }) {
                         sessionStorage.removeItem('token');
                         window.location.href = '/login'
                     }}
-                    className='flex gap-2 items-center text-red-400 hover:text-red-600 text-start ps-5 mb-6'
+                    className='flex gap-2 items-center text-red-400 hover:text-red-600 text-start mb-6'
                 >
                     <IconLogout />
                     {isExpanded && "Cerrar sesión"}
