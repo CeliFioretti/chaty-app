@@ -76,7 +76,7 @@ function SideBar() {
     }
 
     return (
-        <aside className={`sidebar-component text-white h-screen flex flex-col fixed top-0 left-0 transition-all duration-300 min-h-screen ${isExpanded ? 'w-52' : 'w-16'}`} onMouseEnter={() => setIsExpanded(true)} onMouseLeave={() => setIsExpanded(false)}>
+        <aside className={`sidebar-component pt-3 text-white h-screen flex flex-col fixed top-0 left-0 transition-all duration-300 min-h-screen ${isExpanded ? 'w-52' : 'w-16'}`} onMouseEnter={() => setIsExpanded(true)} onMouseLeave={() => setIsExpanded(false)}>
 
             <div className='flex flex-col justify-between h-full w-full'>
                 <nav className='flex flex-col gap-4'>
